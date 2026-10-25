@@ -3,38 +3,457 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AIoT Eco-Companion: Talking Plant</title>
+    <title>AIoT Eco-Companion: Talking Plant | สื่อการเรียนรู้ AIoT</title>
+    <!-- Google Fonts & FontAwesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; background-color: #f4f7f6; color: #333; }
-        h1, h2 { color: #2e7d32; }
-        .card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        code { background: #eee; padding: 2px 5px; border-radius: 4px; font-family: monospace; }
-        a.btn { display: inline-block; background: #0088cc; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px; font-weight: bold; margin-top: 10px; }
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --secondary: #3b82f6;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #334155;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Prompt', sans-serif;
+        }
+
+        body {
+            background-color: #f1f5f9;
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* Header / Banner */
+        header {
+            background: linear-gradient(135deg, #064e3b 0%, #047857 50%, #10b981 100%);
+            color: white;
+            padding: 2.5rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .header-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            font-size: 1.05rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: auto;
+        }
+
+        /* Navigation Tabs */
+        nav {
+            background: var(--dark);
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            color: #94a3b8;
+            padding: 14px 20px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            border-bottom: 3px solid var(--primary);
+        }
+
+        /* Container & Cards */
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 28px;
+            margin-bottom: 24px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .card h2 {
+            color: var(--dark);
+            font-size: 1.4rem;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px solid var(--light);
+            padding-bottom: 10px;
+        }
+
+        /* Architecture Flow */
+        .flow-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .flow-step {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--primary);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .flow-icon {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background-color: #f1f5f9;
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        /* Code Blocks */
+        pre {
+            background: #1e293b;
+            color: #f8fafc;
+            padding: 18px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background 0.2s;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn-action:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-telegram {
+            background: #0088cc;
+        }
+        .btn-telegram:hover {
+            background: #006699;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 40px;
+            border-top: 1px solid var(--border);
+        }
     </style>
 </head>
 <body>
 
-    <h1>🌿 AIoT Eco-Companion: Talking Plant</h1>
-    <p>เว็บไซต์สื่อการสอนเทคโนโลยี AIoT ร่วมกับบอร์ด Cucumber RS และ Groq AI (LLaMA 3.3)</p>
+    <!-- Header Section -->
+    <header>
+        <div class="header-badge">CN466 AIoT Course Project</div>
+        <h1>🌿 AIoT Eco-Companion: Talking Plant</h1>
+        <p>เว็บไซต์สื่อการเรียนรู้เทคโนโลยี AIoT การเชื่อมต่อ ESP32, MQTT Broker, Groq AI (LLaMA 3.3) และ Telegram Bot</p>
+    </header>
 
-    <div class="card">
-        <h2>📌 ภาพรวมการทำงาน (System Architecture)</h2>
-        <ul>
-            <li><b>Edge Device:</b> บอร์ด Cucumber RS (ESP32-S2) อ่านค่าอุณหภูมิ ความชื้นอากาศ (HTS221) และความชื้นดิน</li>
-            <li><b>Protocol:</b> ส่งข้อมูล JSON ผ่าน <code>MQTT Broker (broker.hivemq.com)</code></li>
-            <li><b>AI Brain:</b> Google Colab รับข้อมูลแล้วส่งต่อให้ <code>Groq AI (LLaMA 3.3)</code> ประมวลผลบทพูดต้นไม้</li>
-            <li><b>User Interface:</b> แจ้งเตือนรายงานสถานะต้นไม้ผ่าน <b>Telegram Bot</b></li>
-        </ul>
-        <a href="https://t.me/Cucumber_IoT_bot" target="_blank" class="btn">📲 เปิดใช้งานผ่าน Telegram Bot</a>
+    <!-- Navigation Menu -->
+    <nav>
+        <button class="nav-btn active" onclick="switchTab('overview')"><i class="fa-solid fa-house"></i> ภาพรวมระบบ</button>
+        <button class="nav-btn" onclick="switchTab('architecture')"><i class="fa-solid fa-network-wired"></i> สถาปัตยกรรม (Flow)</button>
+        <button class="nav-btn" onclick="switchTab('hardware')"><i class="fa-solid fa-microchip"></i> ฮาร์ดแวร์ & Pinout</button>
+        <button class="nav-btn" onclick="switchTab('code')"><i class="fa-solid fa-code"></i> ซอร์สโค้ดระบบ</button>
+        <button class="nav-btn" onclick="switchTab('tutorial')"><i class="fa-solid fa-graduation-cap"></i> บทเรียน AIoT</button>
+        <button class="nav-btn" onclick="switchTab('demo')"><i class="fa-solid fa-paper-plane"></i> ทดลองใช้งาน</button>
+    </nav>
+
+    <div class="container">
+
+        <!-- TAB 1: OVERVIEW -->
+        <div id="overview" class="tab-content active">
+            <div class="card">
+                <h2><i class="fa-solid fa-leaf" style="color:#10b981;"></i> แนวคิดของโปรเจกต์ (Concept)</h2>
+                <p>โปรเจกต์ <b>"AIoT Eco-Companion: Talking Plant"</b> เป็นการพัฒนาระบบดูแลต้นไม้อัจฉริยะที่เปลี่ยนข้อมูลจากเซ็นเซอร์กายภาพให้กลายเป็น "บทพูดที่มีอารมณ์ความรู้สึก" ผ่านระบบ Generative AI โดยต้นไม้จะสามารถบอกเล่าสภาพอากาศ ความชื้นในดิน และความต้องการของตนเองผ่านแอปพลิเคชัน Telegram ได้อย่างน่ารักและเป็นธรรมชาติ</p>
+            </div>
+
+            <div class="card">
+                <h2><i class="fa-solid fa-bullseye" style="color:#3b82f6;"></i> วัตถุประสงค์การเรียนรู้ (Learning Objectives)</h2>
+                <ul>
+                    <li>เรียนรู้การอ่านค่าเซ็นเซอร์กายภาพ (I2C และ ADC) ด้วยบอร์ด ESP32-S2 (Cucumber RS)</li>
+                    <li>ศึกษาการสื่อสารข้อมูล IoT ด้วยโปรโตคอล MQTT ผ่าน Public Broker</li>
+                    <li>ประมวลผลข้อมูล IoT ร่วมกับ Large Language Model (Groq API - LLaMA 3.3)</li>
+                    <li>สร้างระบบแจ้งเตือนอัตโนมัติไปยังอุปกรณ์ผู้ใช้ผ่าน Telegram Bot API</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- TAB 2: ARCHITECTURE -->
+        <div id="architecture" class="tab-content">
+            <div class="card">
+                <h2><i class="fa-solid fa-diagram-project" style="color:#8b5cf6;"></i> แผนผังการทำงานของระบบ (Data Flow Architecture)</h2>
+                <p>ระบบแบ่งการทำงานออกเป็น 4 ส่วนหลัก ตั้งแต่การตรวจวัดจากอุปกรณ์ไปจนถึงการประมวลผลด้วย AI ดังนี้:</p>
+                
+                <div class="flow-container">
+                    <div class="flow-step">
+                        <div class="flow-icon"><i class="fa-solid fa-microchip"></i></div>
+                        <h3>1. Edge Sensing</h3>
+                        <p>บอร์ด ESP32 อ่านค่าอุณหภูมิ/ความชื้น (HTS221) และความชื้นดิน</p>
+                    </div>
+
+                    <div class="flow-step">
+                        <div class="flow-icon"><i class="fa-solid fa-wifi"></i></div>
+                        <h3>2. MQTT Transport</h3>
+                        <p>ส่งข้อมูลโครงสร้าง JSON ผ่าน Publish Topic <code>/plant/status</code></p>
+                    </div>
+
+                    <div class="flow-step">
+                        <div class="flow-icon"><i class="fa-solid fa-brain"></i></div>
+                        <h3>3. Cloud AI Processing</h3>
+                        <p>Google Colab ดึงข้อมูล MQTT และให้ Groq AI (LLaMA 3.3) แต่งคำพูด</p>
+                    </div>
+
+                    <div class="flow-step">
+                        <div class="flow-icon"><i class="fa-brands fa-telegram"></i></div>
+                        <h3>4. User Interface</h3>
+                        <p>ส่งข้อความแจ้งเตือนอารมณ์ของต้นไม้เข้าแอป Telegram ในมือถือ</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: HARDWARE -->
+        <div id="hardware" class="tab-content">
+            <div class="card">
+                <h2><i class="fa-solid fa-plug" style="color:#f59e0b;"></i> การต่อพินฮาร์ดแวร์ (Cucumber RS Pinout Mapping)</h2>
+                <p>ตารางแสดงการเชื่อมต่อขาสัญญาณของบอร์ด <b>Cucumber RS (ESP32-S2)</b> ร่วมกับเซ็นเซอร์:</p>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>อุปกรณ์ / เซ็นเซอร์</th>
+                            <th>ประเภทสัญญาณ</th>
+                            <th>ขาบนบอร์ด ESP32</th>
+                            <th>หมายเหตุ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>HTS221 (SDA)</td>
+                            <td>I2C Data</td>
+                            <td><code>GPIO 41</code></td>
+                            <td>สายส่งข้อมูล I2C onboard</td>
+                        </tr>
+                        <tr>
+                            <td>HTS221 (SCL)</td>
+                            <td>I2C Clock</td>
+                            <td><code>GPIO 40</code></td>
+                            <td>สายนาฬิกา I2C onboard</td>
+                        </tr>
+                        <tr>
+                            <td>Soil Moisture Sensor</td>
+                            <td>Analog Output</td>
+                            <td><code>GPIO 1</code></td>
+                            <td>กลุ่มขา ADC1 (อ่านค่าอนาล็อก 0-4095)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- TAB 4: SOURCE CODE -->
+        <div id="code" class="tab-content">
+            <div class="card">
+                <h2><i class="fa-solid fa-code" style="color:#10b981;"></i> 1. โค้ด ESP32 (PlatformIO - main.cpp)</h2>
+                <pre><code>#include &lt;Arduino.h&gt;
+#include &lt;Wire.h&gt;
+#include &lt;Adafruit_HTS221.h&gt;
+#include &lt;WiFi.h&gt;
+#include &lt;PubSubClient.h&gt;
+#include &lt;ArduinoJson.h&gt;
+
+const char* ssid = "YOUR_WIFI_SSID";
+const char* password = "YOUR_WIFI_PASSWORD";
+const char* mqtt_server = "broker.hivemq.com";
+const char* mqtt_topic = "/plant/status";
+
+#define SOIL_PIN 1
+
+Adafruit_HTS221 hts;
+WiFiClient espClient;
+PubSubClient client(espClient);
+
+void setup() {
+  Serial.begin(115200);
+  Wire.begin(41, 40); // กำหนดขา I2C Cucumber RS (SDA=41, SCL=40)
+  hts.begin_I2C();
+  
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) { delay(500); }
+  client.setServer(mqtt_server, 1883);
+}
+
+void loop() {
+  if (!client.connected()) { /* reconnect logic */ }
+  client.loop();
+
+  // อ่านค่าเซ็นเซอร์และ Publish MQTT ทุกๆ 10 วินาที
+}</code></pre>
+            </div>
+
+            <div class="card">
+                <h2><i class="fa-brands fa-python" style="color:#3b82f6;"></i> 2. โค้ด Cloud AI Processor (Google Colab Python)</h2>
+                <pre><code>import json, time, requests
+import paho.mqtt.client as mqtt
+
+GROQ_API_KEY = "gsk_..."
+TELEGRAM_TOKEN = "8869725716:AAEuVT76yETuIjo2o-_AmeGa-MsKGqFi_y0"
+CHAT_ID = "8762064730"
+
+def generate_speech(data):
+    # ส่ง Prompt ให้ Groq LLaMA 3.3 ประมวลผลคำพูดขี้อ้อนของต้นไม้
+    ...
+
+def on_message(client, userdata, msg):
+    payload = json.loads(msg.payload.decode('utf-8'))
+    speech = generate_speech(payload)
+    # ส่งข้อความผ่าน Telegram Bot API
+    ...</code></pre>
+            </div>
+        </div>
+
+        <!-- TAB 5: TUTORIAL -->
+        <div id="tutorial" class="tab-content">
+            <div class="card">
+                <h2><i class="fa-solid fa-book-open" style="color:#ef4444;"></i> บทเรียนที่ 1: ความรู้พื้นฐาน AIoT</h2>
+                <p><b>AIoT (Artificial Intelligence of Things)</b> คือการนำเทคโนโลยีปัญญาประดิษฐ์ (AI) เข้ามาเสริมประสิทธิภาพให้กับระบบ IoT ช่วยเปลี่ยนข้อมูลดิบ (Raw Data) จากเซ็นเซอร์ ให้กลายเป็นข้อมูลเชิงวิเคราะห์ที่มีคุณค่าและตอบสนองกับมนุษย์ได้สมจริงยิ่งขึ้น</p>
+            </div>
+
+            <div class="card">
+                <h2><i class="fa-solid fa-book-open" style="color:#f59e0b;"></i> บทเรียนที่ 2: โปรโตคอล MQTT ในงาน IoT</h2>
+                <p>MQTT เป็นโปรโตคอลสื่อสารน้ำหนักเบาที่ทำงานแบบ Publish/Subscribe เหมาะอย่างยิ่งสำหรับอุปกรณ์ข้อจำกัดสูง เช่น ESP32 โดยข้อดีคือประหยัดพลังงาน รับส่งข้อมูลรวดเร็ว และยืดหยุ่นสูง</p>
+            </div>
+        </div>
+
+        <!-- TAB 6: DEMO -->
+        <div id="demo" class="tab-content">
+            <div class="card">
+                <h2><i class="fa-solid fa-rocket" style="color:#10b981;"></i> ช่องทางการทดลองใช้งานจริง</h2>
+                <p>สามารถทดสอบระบบรายงานผลเรียลไทม์ และสตรีมดูข้อมูลเซ็นเซอร์ได้จากช่องทางด้านล่างนี้:</p>
+                
+                <a href="https://t.me/Cucumber_IoT_bot" target="_blank" class="btn-action btn-telegram">
+                    <i class="fa-brands fa-telegram"></i> ทดลองใช้งาน Telegram Bot
+                </a>
+
+                <a href="https://www.hivemq.com/demos/websocket-client/" target="_blank" class="btn-action" style="background:#f59e0b; margin-left:10px;">
+                    <i class="fa-solid fa-globe"></i> สตรีมดูข้อมูลผ่าน HiveMQ Client
+                </a>
+            </div>
+        </div>
+
     </div>
 
-    <div class="card">
-        <h2>🛠️ การต่อฮาร์ดแวร์ (Cucumber RS)</h2>
-        <ul>
-            <li><b>HTS221 Sensor:</b> SDA = <code>GPIO 41</code>, SCL = <code>GPIO 40</code></li>
-            <li><b>Soil Moisture Sensor:</b> Analog Out = <code>GPIO 1 (ADC1)</code></li>
-        </ul>
-    </div>
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 AIoT Eco-Companion Project | พัฒนาขึ้นเพื่อการเรียนการสอนวิชา CN466</p>
+    </footer>
 
+    <!-- JavaScript For Tabs -->
+    <script>
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+    </script>
 </body>
 </html>
