@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIoT Eco-Companion: Talking Plant</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; background-color: #f4f7f6; color: #333; }
+        h1, h2 { color: #2e7d32; }
+        .card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        code { background: #eee; padding: 2px 5px; border-radius: 4px; font-family: monospace; }
+        a.btn { display: inline-block; background: #0088cc; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px; font-weight: bold; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <h1>🌿 AIoT Eco-Companion: Talking Plant</h1>
+    <p>เว็บไซต์สื่อการสอนเทคโนโลยี AIoT ร่วมกับบอร์ด Cucumber RS และ Groq AI (LLaMA 3.3)</p>
+
+    <div class="card">
+        <h2>📌 ภาพรวมการทำงาน (System Architecture)</h2>
+        <ul>
+            <li><b>Edge Device:</b> บอร์ด Cucumber RS (ESP32-S2) อ่านค่าอุณหภูมิ ความชื้นอากาศ (HTS221) และความชื้นดิน</li>
+            <li><b>Protocol:</b> ส่งข้อมูล JSON ผ่าน <code>MQTT Broker (broker.hivemq.com)</code></li>
+            <li><b>AI Brain:</b> Google Colab รับข้อมูลแล้วส่งต่อให้ <code>Groq AI (LLaMA 3.3)</code> ประมวลผลบทพูดต้นไม้</li>
+            <li><b>User Interface:</b> แจ้งเตือนรายงานสถานะต้นไม้ผ่าน <b>Telegram Bot</b></li>
+        </ul>
+        <a href="https://t.me/Cucumber_IoT_bot" target="_blank" class="btn">📲 เปิดใช้งานผ่าน Telegram Bot</a>
+    </div>
+
+    <div class="card">
+        <h2>🛠️ การต่อฮาร์ดแวร์ (Cucumber RS)</h2>
+        <ul>
+            <li><b>HTS221 Sensor:</b> SDA = <code>GPIO 41</code>, SCL = <code>GPIO 40</code></li>
+            <li><b>Soil Moisture Sensor:</b> Analog Out = <code>GPIO 1 (ADC1)</code></li>
+        </ul>
+    </div>
+
+</body>
+</html>
